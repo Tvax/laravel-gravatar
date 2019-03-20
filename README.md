@@ -16,5 +16,7 @@ git push
 
 #### Creer une branch
 git checkout develop
+
 git pull
+
 git checkout -b "Fonct_Add_admin_route"
