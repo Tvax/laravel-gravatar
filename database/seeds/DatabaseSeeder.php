@@ -9,8 +9,11 @@ class DatabaseSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
-    {
-        // $this->call(UsersTableSeeder::class);
+    public function run(){
+        factory(App\User::class, 10)->create()
+            ->each(function (App\User $user) {
+                $user->avatars()->saveMany(factory(App\Avatar::class, 10)->make());
+                $user->mails()->saveMany(factory(App\Mail::class, 10)->make());
+            });
     }
 }
