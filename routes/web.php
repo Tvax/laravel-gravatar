@@ -12,8 +12,8 @@
 */
 
 Route::get("/", "UserController@index")->name("index");
-Route::get("/list", "UserController@listMail")->name("index");
-Route::get("/avatar", "UserController@listMail")->name("index");
+Route::get("/mail/{user_id?}", "UserController@listMail")->name("mail_user");
+Route::get("/avatar/{user_id?}", "UserController@listAvatar")->name("avatar_user");
 
 
 /*
