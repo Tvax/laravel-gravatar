@@ -20,9 +20,6 @@ class UserController extends Controller
 
     public function listAvatar(request $request){
         return Avatar::whereUserId(Auth::id())->get();
-        foreach($avatars as $avatar){
-            echo "<img src='".$avatar->uri."' alt=''/><br>";
-        }
     }
 
     public function index(request $request){
@@ -36,5 +33,21 @@ class UserController extends Controller
         foreach($avatars as $avatar){
             echo "<img src='".$avatar->uri."' alt=''/><br>";
         }
+    }
+
+    public function addMail(request $request){
+        return Mail::create([
+            "user_id" => Auth::id(),
+            "mail" => "testmail@test.com",//$request->mail,
+            "default" => "0"//$request->default
+        ]);
+    }
+
+    public function addAvatar(request $request){
+        return Avatar::create([
+            "user_id" => Auth::id(),
+            "uri" => "https://farm8.staticflickr.com/7907/40388884403_183783007c_h.jpg",//$request->uri,
+            "default" => "0"//$request->default
+        ]);
     }
 }
