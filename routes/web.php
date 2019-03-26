@@ -11,10 +11,12 @@
 |
 */
 
-Route::get("/", "UserController@index")->name("index");
-Route::get("/mail/{user_id?}", "UserController@listMail")->name("mail_user");
-Route::get("/avatar/{user_id?}", "UserController@listAvatar")->name("avatar_user");
-Route::get("/lol", function(){return "test";});
+Route::get("/", function(){
+    return view("welcome");
+})->name("home");
+
+Route::get("/user", "UserController@index")->name("index");
+
 
 
 /*

@@ -10,24 +10,31 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Mail;
 use App\Avatar;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
     public function listMail(request $request){
-        $mails = Mail::whereUserId($request->user_id)->get();
-        foreach($mails as $mail){
-            echo $mail->mail.'<br>';
-        }
+        return Mail::whereUserId(Auth::id())->get();
     }
 
     public function listAvatar(request $request){
-        $avatars = Avatar::whereUserId($request->user_id)->get();
+        return Avatar::whereUserId(Auth::id())->get();
         foreach($avatars as $avatar){
             echo "<img src='".$avatar->uri."' alt=''/><br>";
         }
     }
 
-    public function index(){
-        return view("welcome");
+    public function index(request $request){
+        $mails=UserController::listMail($request);
+        $avatars=UserController::listAvatar($request);
+        echo "<h3>Vos mails : </h3><br>";
+        foreach($mails as $mail){
+            echo $mail->mail.'<br>';
+        }
+        echo "<h3>Vos avatar : </h3><br>";
+        foreach($avatars as $avatar){
+            echo "<img src='".$avatar->uri."' alt=''/><br>";
+        }
     }
 }
