@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
+use Illuminate\Http\Request;
+use App\Mail;
+use App\Avatar;
 
 class ApiController extends Controller{
     public function config(){
@@ -11,10 +14,13 @@ class ApiController extends Controller{
     }
 
     public function avatar(Request $request){
-        validateEmail($request);
-        //TODO get avatar picture
-        if($avatar != null){
-            return $this->sendJson($avatar);
+        //ApiController::validateEmail($request);
+        $user=Mail::whereMail($request->email)->first();
+        if($user!=null){
+            $avatar = Avatar::whereUserId($user->user_id)->whereDefault(1)->first();
+            if($avatar != null){
+                return $this->sendJson($avatar);
+            }
         }
         //if unknown adress
         return $this->sendJson($this->getError404());
