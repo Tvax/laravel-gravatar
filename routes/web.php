@@ -19,6 +19,7 @@ Route::get("/user", "UserController@index")->name("index");
 ////////////TEST//////////
 Route::get("/test/add/mail", "UserController@addMail");
 Route::get("/test/add/avatar", "UserController@addAvatar");
+Route::post("/test/add/avatar", "UserController@imageUploadPost")->name("post_avatar");
 
 
 /*

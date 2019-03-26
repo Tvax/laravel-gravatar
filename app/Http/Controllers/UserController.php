@@ -11,20 +11,21 @@ use App\User;
 use App\Mail;
 use App\Avatar;
 use Illuminate\Support\Facades\Auth;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class UserController extends Controller
 {
-    public function listMail(request $request){
+    public function listMail(){
         return Mail::whereUserId(Auth::id())->get();
     }
 
-    public function listAvatar(request $request){
+    public function listAvatar(){
         return Avatar::whereUserId(Auth::id())->get();
     }
 
-    public function index(request $request){
-        $mails=UserController::listMail($request);
-        $avatars=UserController::listAvatar($request);
+    public function index(){
+        $mails=UserController::listMail();
+        $avatars=UserController::listAvatar();
         echo "<h3>Vos mails : </h3><br>";
         foreach($mails as $mail){
             echo $mail->mail.'<br>';
@@ -44,9 +45,23 @@ class UserController extends Controller
     }
 
     public function addAvatar(request $request){
+       return view("test");
+    }
+
+    public function imageUploadPost(request $request)
+    {
+        request()->validate([
+            'file' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+        $image = $request->file('file');
+        $filename = time().$image->getClientOriginalName();
+        $image_resize = Image::make($image->getRealPath());              
+        $image_resize->resize(100, 100);
+        $uri="./avatars/" .$filename;
+        $image_resize->save(public_path($uri));
         return Avatar::create([
             "user_id" => Auth::id(),
-            "uri" => "https://farm8.staticflickr.com/7907/40388884403_183783007c_h.jpg",//$request->uri,
+            "uri" => $uri,
             "default" => "0"//$request->default
         ]);
     }
