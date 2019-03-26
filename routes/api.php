@@ -17,4 +17,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/v1/config', 'Api\ApiController@config');
+Route::get('/config', 'Api\ApiController@config');
+Route::post('/config', 'Api\ApiController@config');
+
+Route::post('/avatar/{email?}', 'Api\ApiController@avatar');
+Route::get('/avatar/{email?}', 'Api\ApiController@error');
