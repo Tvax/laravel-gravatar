@@ -41,11 +41,8 @@ class UserController extends Controller
         $data = Mail::create([
             "user_id" => Auth::id(),
             "mail" => $request->mail,
-            "default" => $request->default
+            "default" => 0,
         ]);
-        if($request->default){
-            UserController::updateDefaultMail($data->id);
-        }
         return "mail add";
     }
 
@@ -67,11 +64,8 @@ class UserController extends Controller
         $data = Avatar::create([ //Insert the new avatar in db
             "user_id" => Auth::id(),
             "uri" => $uri,
-            "default" => $request->default
+            "default" => 0,
         ]);
-        if($request->default){
-            UserController::updateDefaultAvatar($data->id);
-        }
         return "avatar upload";
     }
 
@@ -87,33 +81,21 @@ class UserController extends Controller
     }
 
     ///////////////////UPDATE FUNCTION/////////////////////
-    public function updateDefaultMail(request $request, $data_id = null){
-        if ($data_id==null){
-            $id = $request->id;
-        }
-        else {
-            $id = $data_id;
-        }
+    public function updateDefaultMail(request $request){
         Mail::whereUserId(Auth::id())->update([ //Change all user's mail on default 0
             "default" => 0,
         ]);
-        Mail::whereUserId(Auth::id())->whereId($id)->update([ //Change one mail on default 1
+        Mail::whereUserId(Auth::id())->whereId($request->id)->update([ //Change one mail on default 1
             "default" => 1,
         ]);
         return "update default Mail";
     }
 
-    public function updateDefaultAvatar(request $request, $id = null){
-        if ($data_id==null){
-            $id = $request->id;
-        }
-        else {
-            $id = $data_id;
-        }
+    public function updateDefaultAvatar(request $request){
         Avatar::whereUserId(Auth::id())->update([ //Change all user's image on default 0
             "default" => 0,
         ]);
-        Avatar::whereUserId(Auth::id())->whereId($id)->update([ //Change one image on default 1
+        Avatar::whereUserId(Auth::id())->whereId($request->id)->update([ //Change one image on default 1
             "default" => 1,
         ]);
         return "update default Avatar";
