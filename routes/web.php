@@ -12,5 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    $e = new App\Mail();
+
+    return view('homepage')->with('mails', $e::all());;
 });
