@@ -19,7 +19,7 @@ class ApiController extends Controller{
         if($user!=null){
             $avatar = Avatar::whereUserId($user->user_id)->whereDefault(1)->first();
             if($avatar != null){
-                return $this->sendJson($avatar);
+                return $this->getAvatar($avatar);
             }
         }
         //if unknown adress
@@ -43,7 +43,7 @@ class ApiController extends Controller{
     private function getAvatar($avatar){
         return [
             'status' => 'success',
-            'avatar' => $avatar,
+            'avatar' => $avatar->uri,
         ];
     }
 
