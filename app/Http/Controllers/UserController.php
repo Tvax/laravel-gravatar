@@ -36,22 +36,27 @@ class UserController extends Controller
         }
     }
 
+    ///////////////////ADD FUNCTION/////////////////////
     public function addMail(request $request){
-        return Mail::create([
+        $data = Mail::create([
             "user_id" => Auth::id(),
-            "mail" => "testmail@test.com",//$request->mail,
-            "default" => "0"//$request->default
+            "mail" => $request->mail,
+            "default" => $request->default
         ]);
+        if($request->default){
+            UserController::updateDefaultMail($data->id);
+        }
+        return "mail add";
     }
 
     public function addAvatar(request $request){
-       return view("test");
+       return view("test"); //Return view for upload file
     }
 
     public function imageUploadPost(request $request)
     {
         request()->validate([
-            'file' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'file' => 'required|image|mimes:jpeg,png,jpg|max:2048', //Accept just jpeg, png, jpg image
         ]);
         $image = $request->file('file');
         $filename = time().$image->getClientOriginalName();
@@ -59,10 +64,46 @@ class UserController extends Controller
         $image_resize->resize(100, 100);
         $uri="./avatars/" .$filename;
         $image_resize->save(public_path($uri));
-        return Avatar::create([
+        $data = Avatar::create([ //Insert the new avatar in db
             "user_id" => Auth::id(),
             "uri" => $uri,
-            "default" => "0"//$request->default
+            "default" => $request->default
         ]);
+        if($request->default){
+            UserController::updateDefaultAvatar($data->id);
+        }
+        return "avatar upload";
+    }
+
+    ///////////////////DELETE FUNCTION/////////////////////
+    public function deleteMail(request $request){
+        Mail::whereId($request->id)->delete();
+        return "delete Mail";
+    }
+
+    public function deleteAvatar(request $request){
+        Avatar::whereId($request->id)->delete();
+        return "delete Avatar";
+    }
+
+    ///////////////////UPDATE FUNCTION/////////////////////
+    public function updateDefaultMail(request $request){
+        Mail::whereUserId(Auth::id())->update([ //Change all user's mail on default 0
+            "default" => 0,
+        ]);
+        Mail::whereUserId(Auth::id())->whereId(1)->update([ //Change one mail on default 1
+            "default" => 1,
+        ]);
+        return "update default Mail";
+    }
+
+    public function updateDefaultAvatar(request $request, $id = null){
+        Avatar::whereUserId(Auth::id())->update([ //Change all user's image on default 0
+            "default" => 0,
+        ]);
+        Avatar::whereUserId(Auth::id())->whereId($request->id)->update([ //Change one image on default 1
+            "default" => 1,
+        ]);
+        return "update default Avatar";
     }
 }
