@@ -26,16 +26,17 @@ class UserController extends Controller
     public function index(){
         $mails=UserController::listMail();
         $avatars=UserController::listAvatar();
-        echo "<h3>Vos mails : </h3><br>";
-        foreach($mails as $mail){
-            echo $mail->mail.'<br>';
-            echo "<a href=".route('mails.default', $id = $mail->id).">default</a> ";
-            echo "<a href=".route('mails.delete', $id = $mail->id).">delete</a><br>";
-        }
-        echo "<h3>Vos avatar : </h3><br>";
-        foreach($avatars as $avatar){
-            echo "<img src='".$avatar->uri."' alt=''/><br>";
-        }
+        return view('homepage')->with('mails', $mails)->with('avatars', $avatars);
+        // echo "<h3>Vos mails : </h3><br>";
+        // foreach($mails as $mail){
+        //     echo $mail->mail.'<br>';
+        //     echo "<a href=".route('mails.default', $id = $mail->id).">default</a> ";
+        //     echo "<a href=".route('mails.delete', $id = $mail->id).">delete</a><br>";
+        // }
+        // echo "<h3>Vos avatar : </h3><br>";
+        // foreach($avatars as $avatar){
+        //     echo "<img src='".$avatar->uri."' alt=''/><br>";
+        // }
     }
 
     ///////////////////ADD FUNCTION/////////////////////
@@ -55,7 +56,7 @@ class UserController extends Controller
         ]);
         $image = $request->file('file');
         $filename = time().$image->getClientOriginalName();
-        $image_resize = Image::make($image->getRealPath());              
+        $image_resize = Image::make($image->getRealPath());
         $image_resize->resize(100, 100);
         $uri="./avatars/" .$filename;
         $image_resize->save(public_path($uri));

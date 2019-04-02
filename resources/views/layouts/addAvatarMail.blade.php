@@ -1,6 +1,6 @@
 <div>
     <p>
-        {!! Form::open(array('route' => 'mail', 'class' => 'form-group')) !!}
+        {!! Form::open()->route('mails.add') !!}
         {!! Form::text('mail', 'Mail') !!}
         @if ($errors->any())
         <div>
@@ -14,8 +14,8 @@
     </p>
 
     <p>
-        {!! Form::open(array('route' => 'avatar', 'files' => 'true')) !!}
-        {!! Form::file('image', 'Avatar') !!}
+        {!! Form::open()->multipart()->route('avatars.add') !!}
+        {!! Form::file('file', 'Avatar') !!}
         @if ($errors->any())
         <div>
             @foreach ($errors->all() as $error)

@@ -12,8 +12,8 @@
 */
 
 Route::get("/", function(){
-    return view("welcome");
-})->name("home");
+    redirect()->route('home');
+});
 Route::get("/user", "UserController@index")->name("index");
 Auth::routes();
 
@@ -41,9 +41,7 @@ Route::get('/mails/{id}/delete', [
 ]);
 
 //////////////ADD//////////////////////
-Route::post('/mails/edit', [
-    'as' => 'mails.add', 'uses' => 'UserController@addMail'
-]);
+Route::post('/mails/add', 'UserController@addMail')->name('mails.add');
 Route::post('/avatars/add', [
     'as' => 'avatars.add', 'uses' => 'UserController@addAvatar'
 ]);
