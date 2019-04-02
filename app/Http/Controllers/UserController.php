@@ -29,6 +29,8 @@ class UserController extends Controller
         echo "<h3>Vos mails : </h3><br>";
         foreach($mails as $mail){
             echo $mail->mail.'<br>';
+            echo "<a href=".route('mails.default', $id = $mail->id).">default</a> ";
+            echo "<a href=".route('mails.delete', $id = $mail->id).">delete</a><br>";
         }
         echo "<h3>Vos avatar : </h3><br>";
         foreach($avatars as $avatar){
@@ -43,14 +45,10 @@ class UserController extends Controller
             "mail" => $request->mail,
             "default" => 0,
         ]);
-        return "mail add";
+        return redirect()->route('index');
     }
 
-    public function addAvatar(request $request){
-       return view("test"); //Return view for upload file
-    }
-
-    public function imageUploadPost(request $request)
+    public function addAvatar(request $request)
     {
         request()->validate([
             'file' => 'required|image|mimes:jpeg,png,jpg|max:2048', //Accept just jpeg, png, jpg image
@@ -66,18 +64,18 @@ class UserController extends Controller
             "uri" => $uri,
             "default" => 0,
         ]);
-        return "avatar upload";
+        return redirect()->route('index');
     }
 
     ///////////////////DELETE FUNCTION/////////////////////
     public function deleteMail(request $request){
         Mail::whereId($request->id)->delete();
-        return "delete Mail";
+        return redirect()->route('index');
     }
 
     public function deleteAvatar(request $request){
         Avatar::whereId($request->id)->delete();
-        return "delete Avatar";
+        return redirect()->route('index');
     }
 
     ///////////////////UPDATE FUNCTION/////////////////////
@@ -88,7 +86,14 @@ class UserController extends Controller
         Mail::whereUserId(Auth::id())->whereId($request->id)->update([ //Change one mail on default 1
             "default" => 1,
         ]);
-        return "update default Mail";
+        return redirect()->route('index');
+    }
+
+    public function updateMail(request $request){
+        Mail::whereUserId(Auth::id())->whereId($request->id)->update([ //Change one mail on default 1
+            "mail" => $request->mail,
+        ]);
+        return redirect()->route('index');
     }
 
     public function updateDefaultAvatar(request $request){
@@ -98,6 +103,6 @@ class UserController extends Controller
         Avatar::whereUserId(Auth::id())->whereId($request->id)->update([ //Change one image on default 1
             "default" => 1,
         ]);
-        return "update default Avatar";
+        return redirect()->route('index');
     }
 }
