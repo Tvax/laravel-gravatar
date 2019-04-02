@@ -18,9 +18,7 @@ class ApiController extends Controller{
         $user=Mail::whereMail($request->email)->first();
         if($user!=null){
             $avatar = Avatar::whereUserId($user->user_id)->whereDefault(1)->first();
-            if($avatar != null){
-                return $this->getAvatar($avatar);
-            }
+            return $this->getAvatar($avatar);
         }
         //if unknown adress
         return $this->sendJson($this->getError404());
@@ -30,9 +28,9 @@ class ApiController extends Controller{
         return [
             'status' => 'success',
             'version' => '1',
-            'size' => '50',
-            'defaultSize' => '50',
-            'format' => 'jpg',
+            'size' => '100',
+            'defaultSize' => '100',
+            'format' => 'jpg, jpeg, png',
         ];
     }
 
@@ -41,6 +39,12 @@ class ApiController extends Controller{
     }
 
     private function getAvatar($avatar){
+        if($avatar == null){
+            return [
+                'status' => 'success',
+                'avatar' => '',
+            ];
+        }
         return [
             'status' => 'success',
             'avatar' => $avatar->uri,
