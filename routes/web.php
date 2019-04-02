@@ -12,7 +12,7 @@
 */
 
 Route::get("/", function(){
-    redirect()->route('home');
+    return redirect()->route('home');
 });
 Route::get("/user", "UserController@index")->name("index");
 Auth::routes();

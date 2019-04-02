@@ -12,6 +12,7 @@ use App\Mail;
 use App\Avatar;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\ImageManagerStatic as Image;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -27,20 +28,13 @@ class UserController extends Controller
         $mails=UserController::listMail();
         $avatars=UserController::listAvatar();
         return view('homepage')->with('mails', $mails)->with('avatars', $avatars);
-        // echo "<h3>Vos mails : </h3><br>";
-        // foreach($mails as $mail){
-        //     echo $mail->mail.'<br>';
-        //     echo "<a href=".route('mails.default', $id = $mail->id).">default</a> ";
-        //     echo "<a href=".route('mails.delete', $id = $mail->id).">delete</a><br>";
-        // }
-        // echo "<h3>Vos avatar : </h3><br>";
-        // foreach($avatars as $avatar){
-        //     echo "<img src='".$avatar->uri."' alt=''/><br>";
-        // }
     }
 
     ///////////////////ADD FUNCTION/////////////////////
     public function addMail(request $request){
+        request()->validate([
+            'mail' => 'required|email|unique:mails',
+        ]);
         $data = Mail::create([
             "user_id" => Auth::id(),
             "mail" => $request->mail,
@@ -73,7 +67,11 @@ class UserController extends Controller
         return redirect()->route('index');
     }
 
-    public function deleteAvatar(request $request){
+    public function deleteAvatar(request $request){ 
+        $uris = Avatar::whereId($request->id)->get('uri');
+        foreach($uris as $uri){
+            Storage::disk('local')->delete($uri->uri);
+        }
         Avatar::whereId($request->id)->delete();
         return redirect()->route('index');
     }
