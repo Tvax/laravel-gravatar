@@ -11,6 +11,39 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get("/", function(){
+    return view("welcome");
+})->name("home");
+Route::get("/user", "UserController@index")->name("index");
+Auth::routes();
+
+//route auto laravel ->
+Route::get('/home', 'HomeController@index')->name('home');
+
+
+////////////////UPDATE////////////////
+Route::get('/mails/{id}/edit/default', [
+    'as' => 'mails.default', 'uses' => 'UserController@updateDefaultMail'
+]);
+Route::post('/mails/{id}/edit/name', [
+    'as' => 'mails.name', 'uses' => 'UserController@updateMail'
+]);
+Route::get('/avatars/{id}/edit/default', [
+    'as' => 'avatars.default', 'uses' => 'UserController@updateDefaultAvatar'
+]);
+
+///////////////DELETE//////////////////
+Route::get('/avatars/{id}/delete', [
+    'as' => 'avatars.delete', 'uses' => 'UserController@deleteAvatar'
+]);
+Route::get('/mails/{id}/delete', [
+    'as' => 'mails.delete', 'uses' => 'UserController@deleteMail'
+]);
+
+//////////////ADD//////////////////////
+Route::post('/mails/edit', [
+    'as' => 'mails.add', 'uses' => 'UserController@addMail'
+]);
+Route::post('/avatars/add', [
+    'as' => 'avatars.add', 'uses' => 'UserController@addAvatar'
+]);
