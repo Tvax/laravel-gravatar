@@ -20,8 +20,10 @@ class ApiController extends Controller{
             $avatar = Avatar::whereUserId($user->user_id)->whereDefault(1)->first();
             return $this->getAvatar($avatar);
         }
+        else{
         //if unknown adress
         return $this->sendJson($this->getError404());
+        }
     }
 
     private function getConfig(){
