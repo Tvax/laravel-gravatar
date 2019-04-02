@@ -66,7 +66,6 @@ class UserController extends Controller
         ]);
         return redirect()->route('index');
     }
-
     ///////////////////DELETE FUNCTION/////////////////////
     public function deleteMail(request $request){
         Mail::whereId($request->id)->delete();

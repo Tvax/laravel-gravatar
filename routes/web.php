@@ -17,7 +17,6 @@ Route::get("/", function(){
 Route::get("/user", "UserController@index")->name("index");
 Auth::routes();
 
-
 //route auto laravel ->
 Route::get('/home', 'HomeController@index')->name('home');
 
