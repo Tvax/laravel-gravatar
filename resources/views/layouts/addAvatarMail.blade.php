@@ -23,7 +23,7 @@
             @endforeach
         </div>
         @endif
-        {!! Form::submit('Submit') !!}
+        {!! Form::submit('Add avatar') !!}
         {!! Form::close() !!}
     </p>
 </div>
