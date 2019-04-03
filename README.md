@@ -1,22 +1,21 @@
 # laravel-gravatar
 
-#### Ajouter tous fichiers
-git add .
+## Init Project
 
-#### Ajouter les fichiers modifies
-git add -u
+`composer install`
 
-#### Faire ton commit
-git commit -m "Add route for admin"
+Create `.env` file
 
-#### Push sur github
-git push
+`php artisan key:generate`
 
----
+## App description
 
-#### Creer une branch
-git checkout develop
+User can upload an avatar and link it to an email adress thanks to the dashboard.
 
-git pull
+So every time a comment is posted with this email, the app can be called to return the matching avatar.
 
-git checkout -b "Fonct_Add_admin_route"
+It could be used for a comment section, or any online profile.
+
+## Implementation
+
+- [vuejs-gravatar](https://github.com/Tvax/vuejs-gravatar)
